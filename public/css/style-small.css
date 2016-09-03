@@ -6,36 +6,64 @@
 
 /* Basic */
 
-	body, input, select, textarea {
-		font-size: 12pt;
-	}
+body, input, select, textarea {
+	font-size: 12pt;
+}
 
 /* Banner */
 
-	#banner {
-		padding: 8em 2em 8em;
-	}
+#banner {
+	padding: 8em 2em 8em;
+}
 
 /* Wrapper */
 
-	.wrapper {
-		padding: 4em 0em 2em;
-		/* Style 2 Wrapper */
-	}
+.wrapper {
+	padding: 4em 0em 2em;
+	/* Style 2 Wrapper */
+}
 
-		.wrapper.style2 footer {
-			width: 85%;
-		}
+	.wrapper.style2 footer {
+		width: 85%;
+	}
 
 /* Footer */
 
-	#footer {
-		padding: 4em 0em 2em;
-	}
+#footer {
+	padding: 4em 0em 2em;
+}
 
-		#footer .copyright li {
-			border-left: 0;
-			margin-left: 0;
-			padding-left: 0;
-			display: block;
-		}
+#footer .copyright li {
+	border-left: 0;
+	margin-left: 0;
+	padding-left: 0;
+	display: block;
+}
+
+#one .customfont {
+	font-size: 2.5em !important;
+}
+
+#two .customfont {
+	font-size: 2.5em !important;
+}
+
+#three .customfont {
+	font-size: 2.5em !important;
+}
+
+.icon.rounded {
+    background-color: #301C10;
+    border-radius: 100%;
+    color: #ffffff;
+    display: inline-block;
+    height: 5.25em;
+    line-height: 3.25em;
+    text-align: center;
+    width: 5.25em;
+    background-position: center center;
+    background-size: cover;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+}

@@ -11,14 +11,14 @@
 */
 
 
-	@font-face {
-	    font-family: "LuFernandes";
-	    src: url('../fonts/Hickory Jack Light.ttf') format("truetype");
-	}
-	.customfont { 
-	    font-family: "LuFernandes", Verdana, Tahoma;
-	    font-size: 5em !important;
-	}
+@font-face {
+    font-family: "LuFernandes";
+    src: url('../fonts/Hickory Jack Light.ttf') format("truetype");
+}
+.customfont { 
+    font-family: "LuFernandes", Verdana, Tahoma;
+    font-size: 5em !important;
+}
 
 
 /* Basic */
@@ -153,12 +153,12 @@
 		margin: 0 0 2em 0;
 	}
 
-		pre code {
-			display: block;
-			line-height: 1.75em;
-			padding: 1em 1.5em;
-			overflow-x: auto;
-		}
+	pre code {
+		display: block;
+		line-height: 1.75em;
+		padding: 1em 1.5em;
+		overflow-x: auto;
+	}
 
 	.align-left {
 		text-align: left;
