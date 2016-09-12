@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<% include basic/header %>
+<script type="text/javascript" src="/administrar.js"></script> 
+<body>
+	<% include basic/navbar %>
+	
+	<div class="jumbotron" ng-controller="controlador" ng-init="init()">
+		<div class="container">
+
+			<form>
+				<h3>Geral</h3>
+				<div class="form-group">
+					<label for="nome">Nome do site:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.nome" >
+				</div>
+				<div class="form-group">
+					<label for="nome">Título do site:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.titulo">
+				</div>
+				<div class="form-group">
+					<label for="nome">Celular:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.celular">
+				</div>
+				<div class="form-group">
+					<label for="nome">Títulos de Imagens:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.grupos">
+				</div>
+				<div class="form-group">
+					<label for="nome">Mostrar valores nas imagens:</label>
+					<select class="form-control" data-ng-options="valor.id as valor.name for valor in valores" ng-model="config.preco"></select>
+				</div>
+				<div class="form-group">
+					<label for="nome">Titulo de Contatos:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.contato">
+				</div>
+				<div class="form-group">
+					<label for="nome">E-mail que será enviado os contatos:</label>
+					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" ng-model="config.email">
+				</div>
+				<input class="btn btn-default" value="Gravar Alterações" ng-click="salvar()"/>
+			</form>
+
+
+
+		</div>
+	</div>
+	<div class="container">
+		<hr>
+		<% include basic/footer %>
+	</div>
+</body>
+</html>

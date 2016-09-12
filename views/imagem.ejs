@@ -1,32 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <% include basic/header %>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.navbar-nav').hide();
-});
-</script>
+<script type="text/javascript" src="/administrar.js"></script> 
 <body>
 	<% include basic/navbar %>
 	
-	<div class="jumbotron">
+	<div class="jumbotron" ng-controller="controlador">
 		<div class="container">
-			<form class="form-inline" action="/login" method="POST">
+			<!-- <form class="form-inline" action="/login" method="POST">
 				<h3>Faça seu login</h3>
-
 				<div class="form-group">
 					<label for="nome">Usuario:</label>
 					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" value="" >
 				</div>
-
 				<div class="form-group">
 					<label for="senha">Senha:</label>
 					<input class="form-control" name="senha" id="senha" placeholder="*********" type="password" value="" >
 				</div>
-
 				<button type="submit" class="btn btn-default">Entrar</button>
-
-			</form>
+			</form> -->
 		</div>
 	</div>
 	<div class="container">
