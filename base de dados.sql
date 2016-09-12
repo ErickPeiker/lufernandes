@@ -1,0 +1,100 @@
+﻿CREATE TABLE CONFIG (
+	NOME varchar(40) NOT NULL,
+	TITULO varchar(100) NOT NULL,
+	CELULAR varchar(100) NOT NULL,
+	GRUPOS varchar(100) NOT NULL,
+	CONTATO varchar(100) NOT NULL,
+	PRECO BOOLEAN DEFAULT FALSE,
+	EMAIL varchar(200) NOT NULL
+);
+
+CREATE TABLE GRUPO(
+	ID bigserial primary key,
+	NOME varchar(200) NOT NULL
+);
+
+CREATE TABLE IMAGEM (
+	ID bigserial primary key,
+	NOME varchar(100) NOT NULL,
+	CAMINHO varchar(500) NOT NULL,
+	PRECO REAL
+);
+
+CREATE TABLE IMAGEM_AGRUPA (
+	ID bigserial primary key,
+	ID_GRUPO integer REFERENCES GRUPO (ID),
+	ID_IMAGEM integer REFERENCES IMAGEM (ID)
+);
+
+--Criado a estrutura
+
+INSERT INTO CONFIG
+VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 4587-9481', 'Ótimos momentos com detalhes especiais', 'Entre em contato', FALSE, 'lufernand@hotmail.com');
+
+SELECT * FROM CONFIG;
+
+INSERT INTO GRUPO (nome)
+VALUES('Bolos');
+
+INSERT INTO GRUPO (nome)
+VALUES('Lembranças');
+
+INSERT INTO GRUPO (nome)
+VALUES('Casamentos');
+
+INSERT INTO GRUPO (nome)
+VALUES('Doces Artesanais');
+
+SELECT * FROM GRUPO;
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Cento de brigadeiro', '/images/todas/1.jpg', 39.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Bolo grande', '/images/todas/2.jpg', 69.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Cento de brigadeiro', '/images/todas/3.jpg', 39.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Bolo grande', '/images/todas/4.jpg', 69.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Cento de brigadeiro', '/images/todas/5.jpg', 39.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Bolo grande', '/images/todas/6.jpg', 69.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Cento de brigadeiro', '/images/todas/7.jpg', 39.99);
+
+INSERT INTO IMAGEM (NOME, CAMINHO, PRECO)
+VALUES ('Bolo grande', '/images/todas/8.jpg', 69.99);
+
+SELECT * FROM IMAGEM;
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (1, 9);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (2, 10);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (1, 11);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (2, 12);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (3, 13);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (3, 14);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (4, 15);
+
+INSERT INTO IMAGEM_AGRUPA (ID_GRUPO, ID_IMAGEM)
+VALUES (4, 16);
+
+SELECT * FROM IMAGEM_AGRUPA;

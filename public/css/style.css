@@ -489,96 +489,79 @@
 
 		.icon.rounded.img1:hover{
 			/*background-image: url(../images/festa_crianca.jpg);*/
-			font-size: 2.8em;
+			/*font-size: 2.4em;*/
+			border: 3px solid #FFB5D4;
 		}
 
-		.icon.rounded.img2{
-			/*background-image: url(../images/dark_tint.png), url(../images/bolo.jpg);*/
-			background-image: url(../images/bolo.jpg);
+
+		.icon.rounded.big {
+			font-size: 2.0em;
+			margin-bottom: 0.5em;
 		}
 
-		.icon.rounded.img2:hover{
-			/*background-image: url(../images/bolo.jpg);*/
-			font-size: 2.8em;
+		.icon.rounded.color1 {
+			background-color: #FFB5D4;
 		}
 
-		.icon.rounded.img3{
-			/*background-image: url(../images/dark_tint.png), url(../images/maca.jpg);*/
-			background-image: url(../images/maca.jpg);
+		.icon.rounded.color2 {
+			background-color: #3c61d4;
 		}
 
-		.icon.rounded.img3:hover{
-			font-size: 2.8em;
+		.icon.rounded.color3 {
+			background-color: #633cd4;
 		}
 
-			.icon.rounded.big {
-				font-size: 2.5em;
-				margin-bottom: 0.5em;
-			}
+		.icon.rounded.color4 {
+			background-color: #af3cd4;
+		}
 
-			.icon.rounded.color1 {
-				background-color: #FFB5D4;
-			}
+		.icon.rounded.color5 {
+			background-color: #d43cad;
+		}
 
-			.icon.rounded.color2 {
-				background-color: #3c61d4;
-			}
+		.icon.rounded.color6 {
+			background-color: #d43c61;
+		}
 
-			.icon.rounded.color3 {
-				background-color: #633cd4;
-			}
+		.icon.rounded.color7 {
+			background-color: #d4633c;
+		}
 
-			.icon.rounded.color4 {
-				background-color: #af3cd4;
-			}
+		.icon.rounded.color8 {
+			background-color: #d4af3c;
+		}
 
-			.icon.rounded.color5 {
-				background-color: #d43cad;
-			}
+		.icon.rounded.color9 {
+			background-color: #add43c;
+		}
 
-			.icon.rounded.color6 {
-				background-color: #d43c61;
-			}
+		.icon.rounded.color10 {
+			background-color: #61d43c;
+		}
 
-			.icon.rounded.color7 {
-				background-color: #d4633c;
-			}
+		.icon.rounded.fa-twitter {
+			background-color: #2daae4;
+		}
 
-			.icon.rounded.color8 {
-				background-color: #d4af3c;
-			}
+		.icon.rounded.fa-facebook {
+			background-color: #39599f;
+		}
 
-			.icon.rounded.color9 {
-				background-color: #add43c;
-			}
+		.icon.rounded.fa-google-plus {
+			background-color: #c91e1f;
+		}
 
-			.icon.rounded.color10 {
-				background-color: #61d43c;
-			}
+		.icon.rounded.fa-dribbble {
+			background-color: #c4376b;
+		}
 
-			.icon.rounded.fa-twitter {
-				background-color: #2daae4;
-			}
+		.icon.rounded.fa-tumblr, .icon.rounded.fa-linkedin {
+			background-color: #31516a;
+		}
 
-			.icon.rounded.fa-facebook {
-				background-color: #39599f;
-			}
-
-			.icon.rounded.fa-google-plus {
-				background-color: #c91e1f;
-			}
-
-			.icon.rounded.fa-dribbble {
-				background-color: #c4376b;
-			}
-
-			.icon.rounded.fa-tumblr, .icon.rounded.fa-linkedin {
-				background-color: #31516a;
-			}
-
-			.icon.rounded.fa-rss {
-				background-color: #f2600b;
-			}
+		.icon.rounded.fa-rss {
+			background-color: #f2600b;
+		}
 
 /* Image */
 
@@ -1229,7 +1212,16 @@
 	display: none;
 }
 
+.carousel {
+	margin-top: 120px!important;
+}
+
 .carousel-inner>.item>img{
-	width : 600px;
-	height : 450px;
+	width : 580px;
+	height : 420px;
+}
+
+.carousel-caption {
+	color : black!important;
+	padding-bottom: 0;
 }

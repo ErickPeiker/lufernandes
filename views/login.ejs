@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<% include basic/header %>
+<script type="text/javascript" src="/login.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.navbar-nav').hide();
+});
+</script>
+<body>
+	<% include basic/navbar %>
+	
+	<div class="jumbotron" ng-controller="controlador">
+		<div class="container">
+			<form class="form-inline">
+				<h3>Faça seu login</h3>
+
+				<div class="form-group">
+					<label for="nome">Usuario:</label>
+					<input class="form-control" ng-model="usuario.nome" name="nome" id="nome" placeholder="Usuario" type="text" value="" >
+				</div>
+
+				<div class="form-group">
+					<label for="senha">Senha:</label>
+					<input class="form-control" ng-model="usuario.senha" name="senha" id="senha" placeholder="*********" type="password" value="" >
+				</div>
+
+				<button type="submit" ng-click="logar()" class="btn btn-default">Entrar</button>
+
+			</form>
+		</div>
+	</div>
+	<div class="container">
+		<hr>
+		<% include basic/footer %>
+	</div>
+</body>
+</html>
