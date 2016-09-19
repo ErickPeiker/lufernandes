@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <% include basic/header %>
-<script type="text/javascript" src="/administrar.js"></script> 
+<style>
+	.jumbotron .container{
+		padding-bottom: 30px;
+	}
+</style>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.fileupload.js"></script>
+<script src="/js/upload.js"></script>
+<script type="text/javascript" src="/adm_grupos.js"></script> 
 <body>
 	<% include basic/navbar %>
 	
-	<div class="jumbotron" ng-controller="controlador">
+	<div class="jumbotron" ng-controller="controlador" ng-init="init()">
 		<div class="container">
+			<form class="form-horizontal">
+				<h3>Grupos</h3>
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="nome">Nome:</label>
+					<div class="col-md-10">
+						<input class="form-control" name="nome" id="nome" placeholder="Grupo" type="text" ng-model="grupo.nome">
+					</div>
+				</div>
+				<div class="form-group">
+					 <div class="col-md-offset-2 col-md-10">
+					 	<input class="btn btn-primary" value="Gravar" ng-click="salvar()"/>
+						<input class="btn btn-default" value="Cancelar" ng-click="reset()"/>
+					 </div>
+					
+				</div>
+			</form>
+		</div>
 
+		<div class="container">
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<th>
+							Grupo
+						</th>
+						<th>
+							Ações
+						</th>
+					</thead>
+					<tr ng-repeat="grp in grupos">
+						<td>
+							<span ng-bind="grp.nome"></span>
+						</td>
+						<td>
+							<input class="btn btn-default" value="Alterar" ng-click="alterar(grp)"/>
+							<input class="btn btn-danger" value="Excluir" ng-click="excluir(grp.id)"/>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 	<div class="container">

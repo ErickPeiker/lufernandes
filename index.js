@@ -1,6 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var pg = require('pg');
+//var s3 = require('s3');
+
+var s3 = require('./s3');
+var crypto = require('crypto');
+var path = require('path');
 
 var app = express();
 var port = process.env.PORT || 8080;
@@ -9,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
+
 var configBD = {
 	user: 'mrxtnwahmyzycx', 
 	database: 'de1oqvahu5tfo0', 
@@ -16,8 +22,25 @@ var configBD = {
 	host: 'ec2-23-23-162-78.compute-1.amazonaws.com', 
 	port: 5432
 }
-
 pg.defaults.ssl = true;
+
+var s3Config = {
+  accessKey: 'AKIAJBDVHWCZ646WK2IA',
+  secretKey: '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',
+  bucket: 'lufernandes',
+  region: 'sa-east-1'
+};
+
+app.get('/info-s3', function(request, response) {
+  if (request.query.filename) {
+    var filename =
+      crypto.randomBytes(16).toString('hex') +
+      path.extname(request.query.filename);
+    response.json(s3.s3Credentials(s3Config, filename));
+  } else {
+    response.status(400).send('filename is required');
+  }
+});
 
 app.get('/', function(req, res) {
 	var client = new pg.Client(configBD);
@@ -46,7 +69,6 @@ app.get('/', function(req, res) {
 						if (err) {
 							throw err;
 						}
-						console.log(site);
 						res.render('index', site);
 					});
 				});
@@ -87,10 +109,172 @@ app.get('/get-config', function(req, res) {
 				if (err) {
 					throw err;
 				}
-				console.log(result.rows[0]);
 				res.json(result.rows[0]);
 			});
 		  });
+	});
+});
+
+app.get('/get-grupos', function (req, res){
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		client.query('SELECT * FROM GRUPO', function (err, result) {
+			if (err) {
+		    	throw err;	
+			}
+			client.end(function (err) {
+				if (err) {
+					throw err;
+				}
+				res.json(result.rows);
+			});
+		});
+	});
+});
+
+app.post('/grava-grupo', function(req, res) {
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		var parametros = [];
+		if (req.body.id > 0) {
+			parametros.push(req.body.id);
+			parametros.push(req.body.nome);
+			client.query('UPDATE GRUPO SET NOME = $2 WHERE ID = $1', parametros, function (err, result) {
+			    if (err) {
+			    	res.json(err);
+				}
+				client.end(function (err) {
+					if (err) {
+						res.json(err);
+					}
+					res.json(result);
+				});
+			});
+		} else {
+			parametros.push(req.body.nome);
+			client.query('INSERT INTO GRUPO (NOME) VALUES ($1)', parametros, function (err, result) {
+			    if (err) {
+			    	res.json(err);
+				}
+				client.end(function (err) {
+					if (err) {
+						res.json(err);
+					}
+					res.json(result);
+				});
+			});
+		}
+	});
+});
+
+app.post('/exclui-grupo', function(req, res) {
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		var parametros = [];
+		parametros.push(req.body.id);
+		client.query('DELETE FROM GRUPO WHERE ID = $1', parametros, function (err, result) {
+		    if (err) {
+		    	res.json(err);
+			}
+			client.end(function (err) {
+				if (err) {
+					res.json(err);
+				}
+				res.json(result);
+			});
+		});
+
+	});
+});
+
+app.get('/get-imagens', function (req, res) {
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		client.query('SELECT * FROM IMAGEM', function (err, result) {
+			if (err) {
+		    	throw err;	
+			}
+			client.end(function (err) {
+				if (err) {
+					throw err;
+				}
+				res.json(result.rows);
+			});
+		});
+	});
+});
+
+app.post('/grava-imagem', function (req, res) {
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		var parametros = [];
+		parametros.push(req.body.file);
+		client.query('INSERT INTO IMAGEM (FILE) VALUES ($1) RETURNING ID', parametros, function (err, result) {
+		    if (err) {
+		    	res.json(err);
+			}
+			client.end(function (err) {
+				if (err) {
+					res.json(err);
+				}
+				res.json(result);
+			});
+		});
+	});
+});
+
+app.post('/atualiza-imagem', function (req, res) {
+	var client = new pg.Client(configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		var ok = true;
+		var parametros = [];
+
+		if (req.body.nome.length > 0) {
+			parametros.push(req.body.nome);
+		}else{ok=false}
+
+		if (req.body.preco.length > 0) {
+			parametros.push(req.body.preco);
+		}else{parametros.push(0)}
+
+		if (req.body.grupo.length > 0) {
+			parametros.push(req.body.grupo);
+		}else{ok=false}
+
+		parametros.push(req.body.principal);
+
+		if (ok) {
+			parametros.push(req.body.id);
+		}
+		client.query('UPDATE IMAGEM SET NOME = $1, PRECO = $2, GRUPO = $3, PRINCIPAL = $4 WHERE ID = $5', parametros, function (err, result) {
+		    if (err) {
+		    	res.json(err);
+			}
+			client.end(function (err) {
+				if (err) {
+					res.json(err);
+				}
+				res.json(result);
+			});
+		});
 	});
 });
 

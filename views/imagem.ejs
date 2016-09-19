@@ -1,24 +1,111 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <% include basic/header %>
-<script type="text/javascript" src="/administrar.js"></script> 
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.fileupload.js"></script>
+<!-- <script src="/js/upload.js"></script> -->
+
+<script type="text/javascript" src="/adm_imagem.js"></script> 
 <body>
 	<% include basic/navbar %>
 	
-	<div class="jumbotron" ng-controller="controlador">
+	<div class="jumbotron" ng-controller="controlador" ng-init="init()">
 		<div class="container">
-			<!-- <form class="form-inline" action="/login" method="POST">
-				<h3>Faça seu login</h3>
+			<form class="form-horizontal">
+				<h3>Imagens</h3>
+
 				<div class="form-group">
-					<label for="nome">Usuario:</label>
-					<input class="form-control" name="nome" id="nome" placeholder="Usuario" type="text" value="" >
+					<label class="col-md-2 control-label" for="nome">Nome:</label>
+					<div class="col-md-10">
+						<input class="form-control" name="nome" id="nome" placeholder="Ex: Bolo de cenoura" type="text" ng-model="imagem.nome">
+					</div>
 				</div>
+
 				<div class="form-group">
-					<label for="senha">Senha:</label>
-					<input class="form-control" name="senha" id="senha" placeholder="*********" type="password" value="" >
+					<label class="col-md-2 control-label" for="preco">Preço:</label>
+					<div class="col-md-10">
+						<input class="form-control" id="preco" placeholder="Ex: 19.99" type="text" ng-model="imagem.preco">
+					</div>
 				</div>
-				<button type="submit" class="btn btn-default">Entrar</button>
-			</form> -->
+
+				<div class="form-group">
+					<label for="grupo" class="col-md-2 control-label">Grupo:</label>
+					<div class="col-md-8">
+						<select id="grupo" ng-model="imagem.grupo" 
+								ng-options="item.id as item.nome for item in grupos track by item.id"
+								class="form-control">
+						</select>
+					</div>
+					<div class="checkbox col-md-2">
+						<label>
+							<input ng-model="imagem.principal" 
+									name="ativo" 
+									type="checkbox">
+							Principal:
+						</label>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="nome">Imagem:</label>
+					<div class="col-md-10">
+						<input id="fileInput" type="file" name="file" />
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="container">
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<th>
+							
+						</th>
+						<th>
+							Nome
+						</th>
+						<th>
+							Preço
+						</th>
+						<th>
+							Grupo
+						</th>
+						<th>
+							Principal
+						</th>
+						<th>
+							Alterar
+						</th>
+					</thead>
+					<tr ng-repeat="img in imagens">
+						<td>
+							<img alt="" ng-src="{{config.url}}{{img.file}}" width="80" height="80"></img>
+						</td>
+						<td>
+							<span ng-bind="img.nome"></span>
+						</td>
+						<td>
+							<span ng-bind="img.preco"></span>
+						</td>
+						<td>
+							<span ng-bind="nomeGrupo(img.grupo)"></span>
+						</td>
+						<td>
+							<span ng-bind="img.principal"></span>
+						</td>
+						<td>
+							<input class="btn btn-default" value="Alterar" ng-click="alterar(img)"/>
+							<input class="btn btn-danger" value="Excluir" ng-click="excluir(img.id)"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		    
 		</div>
 	</div>
 	<div class="container">
