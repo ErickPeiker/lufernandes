@@ -15,21 +15,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 
-var configBD = {
-	user: 'mrxtnwahmyzycx', 
-	database: 'de1oqvahu5tfo0', 
-	password: '8twbcQ1k2-2fScK8BA3hgeLSVI', 
-	host: 'ec2-23-23-162-78.compute-1.amazonaws.com', 
-	port: 5432
-}
-pg.defaults.ssl = true;
-
-var s3Config = {
-  accessKey: 'AKIAJBDVHWCZ646WK2IA',
-  secretKey: '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',
-  bucket: 'lufernandes',
-  region: 'sa-east-1'
-};
+/*
+VARIAVEIS BANCO DE DADOS E S3
+*/
 
 app.get('/info-s3', function(request, response) {
   if (request.query.filename) {
