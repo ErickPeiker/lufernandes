@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var pg = require('pg');
-//var s3 = require('s3');
 
 var s3 = require('./s3');
 var crypto = require('crypto');
@@ -9,29 +8,31 @@ var path = require('path');
 
 var app = express();
 var port = process.env.PORT || 8080;
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+var configuracoes = require('./env.json');
+console.log(configuracoes);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+pg.defaults.ssl = true;
 
 
-/*
-VARIAVEIS BANCO DE DADOS E S3
-*/
 
 app.get('/info-s3', function(request, response) {
   if (request.query.filename) {
     var filename =
       crypto.randomBytes(16).toString('hex') +
       path.extname(request.query.filename);
-    response.json(s3.s3Credentials(s3Config, filename));
+    response.json(s3.s3Credentials(configuracoes.s3Config, filename));
   } else {
     response.status(400).send('filename is required');
   }
 });
 
 app.get('/', function(req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		  if (err){
 		  	throw err;
@@ -84,7 +85,7 @@ app.get('/grupo', function(req, res) {
 });
 
 app.get('/get-config', function(req, res) {
-    var client = new pg.Client(configBD);
+    var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		  if (err){
 		  	throw err;
@@ -104,7 +105,7 @@ app.get('/get-config', function(req, res) {
 });
 
 app.get('/get-grupos', function (req, res){
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -124,7 +125,7 @@ app.get('/get-grupos', function (req, res){
 });
 
 app.post('/grava-grupo', function(req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -162,7 +163,7 @@ app.post('/grava-grupo', function(req, res) {
 });
 
 app.post('/exclui-grupo', function(req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -185,7 +186,7 @@ app.post('/exclui-grupo', function(req, res) {
 });
 
 app.get('/get-imagens', function (req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -205,7 +206,7 @@ app.get('/get-imagens', function (req, res) {
 });
 
 app.post('/grava-imagem', function (req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -227,7 +228,7 @@ app.post('/grava-imagem', function (req, res) {
 });
 
 app.post('/atualiza-imagem', function (req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		if (err){
 			throw err;
@@ -269,7 +270,7 @@ app.post('/atualiza-imagem', function (req, res) {
 app.post('/login', function(req, res) {
 	var client = new pg.Client();
 	usuario = req.body;
-	if (usuario.nome === 'LU' && usuario.senha === 'f&rn@nde$') {
+	if (usuario.nome === configuracoes.admin.usuario && usuario.senha === configuracoes.admin.senha) {
 		res.render('administrar');
 	} else {
 		res.status(500).json({ error: 'Usuario ou senha inválidos'});
@@ -277,7 +278,7 @@ app.post('/login', function(req, res) {
 });
 
 app.post('/altera-config', function(req, res) {
-	var client = new pg.Client(configBD);
+	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		  if (err){
 		  	throw err;
