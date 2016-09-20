@@ -10,6 +10,7 @@
 
 CREATE TABLE GRUPO(
 	ID bigserial primary key,
+	ORDEM INTEGER,
 	NOME varchar(200) NOT NULL
 );
 
@@ -30,17 +31,17 @@ VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 45
 
 SELECT * FROM CONFIG;
 
-INSERT INTO GRUPO (nome)
-VALUES('Bolos');
+INSERT INTO GRUPO (ORDEM, NOME)
+VALUES(1, 'Bolos');
 
-INSERT INTO GRUPO (nome)
-VALUES('Lembranças');
+INSERT INTO GRUPO (ORDEM, NOME)
+VALUES(2, 'Lembranças');
 
-INSERT INTO GRUPO (nome)
-VALUES('Casamentos');
+INSERT INTO GRUPO (ORDEM, NOME)
+VALUES(3, 'Casamentos');
 
-INSERT INTO GRUPO (nome)
-VALUES('Doces Artesanais');
+INSERT INTO GRUPO (ORDEM, NOME)
+VALUES(4, 'Doces Artesanais');
 
 SELECT * FROM GRUPO;
 

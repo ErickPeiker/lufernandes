@@ -483,13 +483,9 @@
 		}
 
 		.icon.rounded.img1{
-			/*background-image: url(../images/dark_tint.png), url(../images/festa_crianca.jpg);*/
-			background-image: url(../images/festa_crianca.jpg);
 		}
 
 		.icon.rounded.img1:hover{
-			/*background-image: url(../images/festa_crianca.jpg);*/
-			/*font-size: 2.4em;*/
 			border: 3px solid #FFB5D4;
 		}
 

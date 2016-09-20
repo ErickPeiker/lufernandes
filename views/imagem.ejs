@@ -48,12 +48,21 @@
 				</div>
 
 
-				<div class="form-group">
+				<div class="form-group" ng-hide="config.edicao">
 					<label class="col-md-2 control-label" for="nome">Imagem:</label>
 					<div class="col-md-10">
 						<input id="fileInput" type="file" name="file" />
 					</div>
 				</div>
+
+				<div class="form-group" ng-show="config.edicao">
+					 <div class="col-md-offset-2 col-md-10">
+					 	<input class="btn btn-primary" value="Gravar" ng-click="atualizaImagem()"/>
+						<input class="btn btn-default" value="Cancelar" ng-click="reset()"/>
+					 </div>
+					
+				</div>
+
 			</form>
 		</div>
 
@@ -75,13 +84,10 @@
 							Grupo
 						</th>
 						<th>
-							Principal
-						</th>
-						<th>
 							Alterar
 						</th>
 					</thead>
-					<tr ng-repeat="img in imagens">
+					<tr ng-repeat="img in imagens" ng-class="{'bg-success': img.principal}">
 						<td>
 							<img alt="" ng-src="{{config.url}}{{img.file}}" width="80" height="80"></img>
 						</td>
@@ -92,10 +98,7 @@
 							<span ng-bind="img.preco"></span>
 						</td>
 						<td>
-							<span ng-bind="nomeGrupo(img.grupo)"></span>
-						</td>
-						<td>
-							<span ng-bind="img.principal"></span>
+							<span ng-bind="nomeGrupo(img.id_grupo)"></span>
 						</td>
 						<td>
 							<input class="btn btn-default" value="Alterar" ng-click="alterar(img)"/>

@@ -11,7 +11,8 @@ angular.module('app', [])
 			bucket : 'lufernandes',
 			acceptFileType : /.*/i,
 			maxFileSize : 1000000,
-			credentialsUrl : '/info-s3'
+			credentialsUrl : '/info-s3',
+			edicao : false
 		}
 
 		$scope.initS3FileUpload();
@@ -21,6 +22,7 @@ angular.module('app', [])
 
 	$scope.reset = function () {
 		$scope.imagens = [];
+		$scope.config.edicao = false;
 		$scope.getImagens();
 		$scope.imagem = {
 			id: 0,
@@ -64,6 +66,15 @@ angular.module('app', [])
 		}
 	}
 
+	$scope.nomePrincipal = function (verdadeiro) {
+		if (verdadeiro) {
+			return 'Sim';
+		} else {
+			return 'Não';
+		}
+		
+	}
+
 	$scope.initS3FileUpload = function () {
 		$('#fileInput').fileupload({
 		    acceptFileTypes: $scope.config.acceptFileType,
@@ -101,19 +112,7 @@ angular.module('app', [])
 	        function(response){
 	        	if (response.data.rowCount === 1){
 	        		$scope.imagem.id = response.data.rows[0].id;
-	        		$http.post('/atualiza-imagem', $scope.imagem)
-					.then(
-				        function(response){
-				        	if (response.data.rowCount === 1){
-				        		$scope.reset();
-	        					alert('Imagem salva com sucesso!');
-	        				}
-				        }, 
-				        function(response){
-				        	console.log(response);
-				        }
-				    );
-
+	        		$scope.atualizaImagem();
 	        	}
 	        }, 
 	        function(response){
@@ -122,9 +121,26 @@ angular.module('app', [])
 	    );
 	}
 
+	$scope.atualizaImagem = function () {
+		$http.post('/atualiza-imagem', $scope.imagem)
+		.then(
+	        function(response){
+	        	if (response.data.rowCount === 1){
+	        		$scope.reset();
+					alert('Imagem salva com sucesso!');
+				}
+	        }, 
+	        function(response){
+	        	console.log(response);
+	        }
+	    );
+	}
+
 	$scope.alterar = function (imagem) {
-		$scope.imagem = imagem;
+		console.log(imagem);
 		$scope.imagens = [];
+		$scope.config.edicao = true;
+		$scope.imagem = imagem;
 	}
 
 	$scope.excluir = function (idImagem) {

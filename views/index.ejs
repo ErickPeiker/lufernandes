@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" ng-app="app">
 	<head>
 		<meta charset="UTF-8">
 		<title>A vida é um doce</title>
@@ -11,12 +11,12 @@
 		<link rel="stylesheet" href="css/bootstrap-modal-carousel.min.css" />
 
 	</head>
-	<body class="landing" ng-app="app">
+	<body class="landing" ng-controller="index" ng-init="init()">
 
-		<section id="banner" ng-controller="banner">
-			<h2 class="customfont" ng-bind-html="'<%=config.nome%>' | to_trusted"></h2>
-			<h3 ng-bind-html="'<%=config.titulo%>' | to_trusted" ></h3>
-			<p ng-bind-html="'<%=config.celular%>' | to_trusted" ></p>
+		<section id="banner">
+			<h2 class="customfont" ng-bind="config.nome"></h2>
+			<h3 ng-bind="config.titulo"></h3>
+			<p ng-bind="config.celular"></p>
 			<p></p>
 		</section>
 
@@ -24,17 +24,15 @@
 		<section id="one" class="wrapper style1 special">
 			<div class="container">
 				<header class="major">
-					<h2 class="customfont" ng-bind-html="'<%=config.grupos%>' | to_trusted"></h2>
+					<h2 class="customfont" ng-bind="config.grupos"></h2>
 				</header>
 				<div class="row 150%">
-					<% for (index in grupos) { %>
-						<div class="4u 12u$(medium)">
-							<section class="box" data-toggle="modal" data-target="#myModal" data-local="#myCarousel">
-								<p><%=grupos[index].nome%></p>
-								<img class="icon big rounded img1"></img>
-							</section>
-						</div>
-					<% } %>
+					<div class="4u 12u$(medium)" ng-repeat="grp in grupos | orderBy: ['ordem', 'nome']">
+						<section class="box" data-toggle="modal" data-target="#myModal" data-local="#myCarousel">
+							<p ng-bind="grp.nome"></p>
+							<img class="icon big rounded img1" ng-src="{{ getImagemPrincipal(grp.id) }}"/>
+						</section>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -43,7 +41,7 @@
 		<section id="three" class="wrapper style3 special">
 			<div class="container">
 				<header class="major">
-					<h2 class="customfont" ng-bind-html="'<%=config.contato%>' | to_trusted"></h2>
+					<h2 class="customfont" ng-bind="config.contato"></h2>
 				</header>
 			</div>
 			<div class="container 50%">
@@ -74,9 +72,10 @@
 		<section class="modal-imagens">
 			<div id="myCarousel" class="carousel slide carousel-fit" data-ride="carousel">
 				<ol class="carousel-indicators">
-					<% for (index in imagens) { %>
-					    <li data-target="#myCarousel" data-slide-to="<%=index%>" class="<%if(index==0){%>active<%}%>"></li>
-					<% } %>
+					<li data-target="#myCarousel"
+						ng-repeat="img in imagens track by $index" 
+						data-slide-to="$index" 
+						ng-class="{'active': $index == 0}"></li>
 				</ol>
 
 				<!-- 
@@ -84,15 +83,14 @@
 				-->
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner">
-					<% for (index in imagens) { %>
-						<div class="item <%if(index==0){%>active<%}%>">
-							<div class="carousel-caption">
-								<h3><%=imagens[index].nome%> - <%=imagens[index].preco%></h3>
-							</div>
-							<img src="<%=imagens[index].caminho%>" alt="<%=imagens[index].nome%>"/>
+					<div ng-repeat="img in imagens" ng-class="{'item': 1==1, 'active': $index == 0}">
+						<div class="carousel-caption">
+							<h3 ng-bind="img.nome+' - '+img.preco"></h3>
 						</div>
-					<% } %>
+						<img ng-src="{{config.url}}{{img.file}}" ng-alt="img.nome"/>
+					</div>
 				</div>
+
 
 				  <!-- Controls -->
 				<a class="left carousel-control" href="#myCarousel" data-slide="prev">

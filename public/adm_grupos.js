@@ -23,6 +23,7 @@ angular.module('app', [])
 		$scope.getGrupos();
 		$scope.grupo = {
 			id: 0,
+			ordem: '',
 			nome: ''
 		}
 	}

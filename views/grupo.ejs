@@ -19,9 +19,15 @@
 			<form class="form-horizontal">
 				<h3>Grupos</h3>
 				<div class="form-group">
+					<label class="col-md-2 control-label" for="ordem">Ordem:</label>
+					<div class="col-md-10">
+						<input class="form-control" name="ordem" id="ordem" placeholder="Ex:1 para ser o primeiro" type="text" ng-model="grupo.ordem">
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-md-2 control-label" for="nome">Nome:</label>
 					<div class="col-md-10">
-						<input class="form-control" name="nome" id="nome" placeholder="Grupo" type="text" ng-model="grupo.nome">
+						<input class="form-control" name="nome" id="nome" placeholder="Nome do grupo de imagens" type="text" ng-model="grupo.nome">
 					</div>
 				</div>
 				<div class="form-group">
@@ -39,13 +45,19 @@
 				<table class="table table-bordered">
 					<thead>
 						<th>
+							Ordem
+						</th>
+						<th>
 							Grupo
 						</th>
 						<th>
 							Ações
 						</th>
 					</thead>
-					<tr ng-repeat="grp in grupos">
+					<tr ng-repeat="grp in grupos | orderBy: ['ordem', 'nome']">
+						<td>
+							<span ng-bind="grp.ordem"></span>
+						</td>
 						<td>
 							<span ng-bind="grp.nome"></span>
 						</td>

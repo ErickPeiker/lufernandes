@@ -10,8 +10,6 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 var configuracoes = require('./env.json');
-console.log(configuracoes);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -32,6 +30,10 @@ app.get('/info-s3', function(request, response) {
 });
 
 app.get('/', function(req, res) {
+	res.render('index');
+});
+
+app.get('/get-site', function (req, res){
 	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
 		  if (err){
@@ -58,14 +60,13 @@ app.get('/', function(req, res) {
 						if (err) {
 							throw err;
 						}
-						res.render('index', site);
+						res.json(site);
 					});
 				});
 		      });
 		  });
 	});
-    
-});
+})
 
 
 app.get('/adm', function(req, res) {
@@ -134,7 +135,8 @@ app.post('/grava-grupo', function(req, res) {
 		if (req.body.id > 0) {
 			parametros.push(req.body.id);
 			parametros.push(req.body.nome);
-			client.query('UPDATE GRUPO SET NOME = $2 WHERE ID = $1', parametros, function (err, result) {
+			parametros.push(req.body.ordem);
+			client.query('UPDATE GRUPO SET NOME = $2, ORDEM = $3 WHERE ID = $1', parametros, function (err, result) {
 			    if (err) {
 			    	res.json(err);
 				}
@@ -147,7 +149,8 @@ app.post('/grava-grupo', function(req, res) {
 			});
 		} else {
 			parametros.push(req.body.nome);
-			client.query('INSERT INTO GRUPO (NOME) VALUES ($1)', parametros, function (err, result) {
+			parametros.push(req.body.ordem);
+			client.query('INSERT INTO GRUPO (NOME) VALUES ($1, $2)', parametros, function (err, result) {
 			    if (err) {
 			    	res.json(err);
 				}
@@ -253,7 +256,8 @@ app.post('/atualiza-imagem', function (req, res) {
 		if (ok) {
 			parametros.push(req.body.id);
 		}
-		client.query('UPDATE IMAGEM SET NOME = $1, PRECO = $2, GRUPO = $3, PRINCIPAL = $4 WHERE ID = $5', parametros, function (err, result) {
+
+		client.query('UPDATE IMAGEM SET NOME = $1, PRECO = $2, ID_GRUPO = $3, PRINCIPAL = $4 WHERE ID = $5', parametros, function (err, result) {
 		    if (err) {
 		    	res.json(err);
 			}
