@@ -10,6 +10,16 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 var configuracoes = require('./env.json');
+
+console.log(configuracoes);
+
+configuracoes.configBD.password = process.env.configBD_password;
+configuracoes.s3Config.secretKey = process.env.s3Config_secretKey;
+configuracoes.admin.senha = process.env.admin_senha;
+
+console.log(configuracoes);
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
