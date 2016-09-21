@@ -3,6 +3,7 @@
 	TITULO varchar(100) NOT NULL,
 	CELULAR varchar(100) NOT NULL,
 	GRUPOS varchar(100) NOT NULL,
+	TOPO_IMAGENS  varchar(100),
 	CONTATO varchar(100) NOT NULL,
 	PRECO BOOLEAN DEFAULT FALSE,
 	EMAIL varchar(200) NOT NULL
@@ -27,7 +28,7 @@ CREATE TABLE IMAGEM (
 --Criado a estrutura
 
 INSERT INTO CONFIG
-VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 4587-9481', 'Ótimos momentos com detalhes especiais', 'Entre em contato', FALSE, 'lufernand@hotmail.com');
+VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 4587-9481', 'Ótimos momentos com detalhes especiais', 'ENCONTRE O QUE FALTA PARA SUA FESTA AQUI!', 'Entre em contato', FALSE, 'lufernand@hotmail.com');
 
 SELECT * FROM CONFIG;
 

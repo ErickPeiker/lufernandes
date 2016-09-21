@@ -1,21 +1,38 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var pg = require('pg');
 
-var s3 = require('./s3');
+//Biblioteca S3
+var s3Library = require('s3');
+//Biblioteca postgress
+var pg = require('pg');
+//Biblioteca de criptografia
 var crypto = require('crypto');
+//Biblioteca para manipular paths
 var path = require('path');
+//Funcoes para amazon
+var s3 = require('./s3');
+//Configurações gerais
+var configuracoes = require('./env.json');
 
 var app = express();
 var port = process.env.PORT || 8080;
-
-var configuracoes = require('./env.json');
 if (process.env.NODE_ENV != 'desen') {
 	configuracoes.configBD.password = process.env.configBD_password;
 	configuracoes.s3Config.secretKey = process.env.s3Config_secretKey;
 	configuracoes.admin.senha = process.env.admin_senha;
 }
 
+var clientS3 = s3Library.createClient({
+  maxAsyncS3: 20,     // this is the default
+  s3RetryCount: 3,    // this is the default
+  s3RetryDelay: 1000, // this is the default
+  multipartUploadThreshold: 20971520, // this is the default (20 MB)
+  multipartUploadSize: 15728640, // this is the default (15 MB)
+  s3Options: {
+    accessKeyId: configuracoes.s3Config.accessKey,
+    secretAccessKey: configuracoes.s3Config.secretKey
+  },
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,21 +40,24 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 pg.defaults.ssl = true;
 
-
-
-app.get('/info-s3', function(request, response) {
-  if (request.query.filename) {
-    var filename =
-      crypto.randomBytes(16).toString('hex') +
-      path.extname(request.query.filename);
-    response.json(s3.s3Credentials(configuracoes.s3Config, filename));
-  } else {
-    response.status(400).send('filename is required');
-  }
-});
-
 app.get('/', function(req, res) {
 	res.render('index');
+});
+
+app.get('/adm', function(req, res) {
+    res.render('login');
+});
+
+app.get('/geral', function(req, res) {
+    res.render('administrar');
+});
+
+app.get('/imagem', function(req, res) {
+    res.render('imagem');
+});
+
+app.get('/grupo', function(req, res) {
+    res.render('grupo');
 });
 
 app.get('/get-site', function (req, res){
@@ -73,23 +93,6 @@ app.get('/get-site', function (req, res){
 		      });
 		  });
 	});
-})
-
-
-app.get('/adm', function(req, res) {
-    res.render('login');
-});
-
-app.get('/geral', function(req, res) {
-    res.render('administrar');
-});
-
-app.get('/imagem', function(req, res) {
-    res.render('imagem');
-});
-
-app.get('/grupo', function(req, res) {
-    res.render('grupo');
 });
 
 app.get('/get-config', function(req, res) {
@@ -107,6 +110,35 @@ app.get('/get-config', function(req, res) {
 					throw err;
 				}
 				res.json(result.rows[0]);
+			});
+		  });
+	});
+});
+
+app.post('/altera-config', function(req, res) {
+	var client = new pg.Client(configuracoes.configBD);
+	client.connect(function (err) {
+		  if (err){
+		  	throw err;
+		  }
+		  var parametros = [];
+		  parametros.push(req.body.nome);
+		  parametros.push(req.body.titulo);
+		  parametros.push(req.body.celular);
+		  parametros.push(req.body.grupos);
+		  parametros.push(req.body.contato);
+		  parametros.push(req.body.preco);
+		  parametros.push(req.body.email);
+		  parametros.push(req.body.topo_imagens);
+		  client.query('UPDATE CONFIG SET NOME = $1, TITULO= $2, CELULAR= $3, GRUPOS= $4, CONTATO= $5, PRECO= $6, EMAIL=$7, TOPO_IMAGENS=$8', parametros, function (err, result) {
+		    if (err) {
+		    	res.json(err);
+			}
+			client.end(function (err) {
+				if (err) {
+					res.json(err);
+				}
+				res.json(result);
 			});
 		  });
 	});
@@ -215,6 +247,52 @@ app.get('/get-imagens', function (req, res) {
 	});
 });
 
+app.get('/info-s3', function(request, response) {
+  if (request.query.filename) {
+    var filename = crypto.randomBytes(16).toString('hex') + path.extname(request.query.filename);
+    response.json(s3.s3Credentials(configuracoes.s3Config, filename));
+  } else {
+    response.status(400).send('filename is required');
+  }
+});
+
+app.post('/remove-imagem', function (req, res) {
+	var objeto = {
+		Bucket: configuracoes.s3Config.bucket,
+		Delete:{
+			Objects: [
+				{
+					Key: req.body.file
+				}
+			]
+		}
+	}
+	clientS3.deleteObjects(objeto, function(err, data) {
+		console.log(err);
+		console.log(data);
+	});
+
+	var client = new pg.Client(configuracoes.configBD);
+	client.connect(function (err) {
+		if (err){
+			throw err;
+		}
+		var parametros = [];
+		parametros.push(req.body.id);
+		client.query('DELETE FROM IMAGEM WHERE ID = $1', parametros, function (err, result) {
+		    if (err) {
+		    	res.json(err);
+			}
+			client.end(function (err) {
+				if (err) {
+					res.json(err);
+				}
+				res.json(result);
+			});
+		});
+	});
+});
+
 app.post('/grava-imagem', function (req, res) {
 	var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
@@ -254,8 +332,8 @@ app.post('/atualiza-imagem', function (req, res) {
 			parametros.push(req.body.preco);
 		}else{parametros.push(0)}
 
-		if (req.body.grupo.length > 0) {
-			parametros.push(req.body.grupo);
+		if (req.body.id_grupo > 0) {
+			parametros.push(req.body.id_grupo);
 		}else{ok=false}
 
 		parametros.push(req.body.principal);
@@ -287,35 +365,6 @@ app.post('/login', function(req, res) {
 		res.status(500).json({ error: 'Usuario ou senha inválidos'});
 	}
 });
-
-app.post('/altera-config', function(req, res) {
-	var client = new pg.Client(configuracoes.configBD);
-	client.connect(function (err) {
-		  if (err){
-		  	throw err;
-		  }
-		  var parametros = [];
-		  parametros.push(req.body.nome);
-		  parametros.push(req.body.titulo);
-		  parametros.push(req.body.celular);
-		  parametros.push(req.body.grupos);
-		  parametros.push(req.body.contato);
-		  parametros.push(req.body.preco);
-		  parametros.push(req.body.email);
-		  client.query('UPDATE CONFIG SET NOME = $1, TITULO= $2, CELULAR= $3, GRUPOS= $4, CONTATO= $5, PRECO= $6, EMAIL=$7', parametros, function (err, result) {
-		    if (err) {
-		    	res.json(err);
-			}
-			client.end(function (err) {
-				if (err) {
-					res.json(err);
-				}
-				res.json(result);
-			});
-		  });
-	});
-});
-
 
 app.listen(port, function() {
     console.log('Our app is running on http://localhost:' + port);

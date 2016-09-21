@@ -1,9 +1,9 @@
 angular.module('app', [])
 .controller('controlador', function($scope, $http) {
 
-	var acceptFileType = /.*/i;
-	var maxFileSize = 1000000;
-	var credentialsUrl = '/info-s3';
+	//var acceptFileType = /.*/i;
+	//var maxFileSize = 1000000;
+	//var credentialsUrl = '/info-s3';
 
 	$scope.init = function () {
 		$scope.config = {
@@ -29,7 +29,7 @@ angular.module('app', [])
 			file: '',
 			nome: '',
 			preco: '',
-			grupo: 0,
+			id_grupo: 0,
 			principal: false
 		}
 	}
@@ -38,7 +38,7 @@ angular.module('app', [])
 		$http.get('/get-grupos')
 		.then(
 	       function(response){
-	       		$scope.grupos = response.data;
+	       		$scope.grupos = response.data;       		
 	       }, 
 	       function(response){
 	         	console.log(response);
@@ -143,8 +143,21 @@ angular.module('app', [])
 		$scope.imagem = imagem;
 	}
 
-	$scope.excluir = function (idImagem) {
-		console.log(idImagem);
+	$scope.excluir = function (imagem) {
+		if (confirm('Você quer excluir a imagem '+imagem.nome+' ?')) {
+			$http.post('/remove-imagem', imagem)
+			.then(
+		        function(response){
+		        	if (response.data){
+		        		$scope.reset();
+						alert('Imagem excluída com sucesso!');
+					}
+		        }, 
+		        function(response){
+		        	console.log(response);
+		        }
+		    );
+		}		
 	}
 
 });

@@ -32,9 +32,9 @@
 				<div class="form-group">
 					<label for="grupo" class="col-md-2 control-label">Grupo:</label>
 					<div class="col-md-8">
-						<select id="grupo" ng-model="imagem.grupo" 
-								ng-options="item.id as item.nome for item in grupos track by item.id"
+						<select id="grupo" ng-model="imagem.id_grupo" 
 								class="form-control">
+							<option ng-repeat="opt in grupos" value="{{opt.id}}" ng-selected="opt.id == imagem.id_grupo">{{opt.nome}}</option>
 						</select>
 					</div>
 					<div class="checkbox col-md-2">
@@ -102,7 +102,7 @@
 						</td>
 						<td>
 							<input class="btn btn-default" value="Alterar" ng-click="alterar(img)"/>
-							<input class="btn btn-danger" value="Excluir" ng-click="excluir(img.id)"/>
+							<input class="btn btn-danger" value="Excluir" ng-click="excluir(img)"/>
 						</td>
 					</tr>
 				</table>
