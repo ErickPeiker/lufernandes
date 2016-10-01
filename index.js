@@ -236,7 +236,7 @@ app.post('/grava-grupo', function(req, res) {
 		} else {
 			parametros.push(req.body.nome);
 			parametros.push(req.body.ordem);
-			client.query('INSERT INTO GRUPO (NOME) VALUES ($1, $2)', parametros, function (err, result) {
+			client.query('INSERT INTO GRUPO (NOME, ORDEM) VALUES ($1, $2)', parametros, function (err, result) {
 			    if (err) {
 			    	res.json(err);
 				}
