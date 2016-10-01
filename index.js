@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var s3Library = require('s3');
 //Biblioteca postgress
 var pg = require('pg');
+//Biblioteca para manipular emails
+var nodemailer = require('nodemailer');
 //Biblioteca de criptografia
 var crypto = require('crypto');
 //Biblioteca para manipular paths
@@ -23,11 +25,11 @@ if (process.env.NODE_ENV != 'desen') {
 }
 
 var clientS3 = s3Library.createClient({
-  maxAsyncS3: 20,     // this is the default
-  s3RetryCount: 3,    // this is the default
-  s3RetryDelay: 1000, // this is the default
-  multipartUploadThreshold: 20971520, // this is the default (20 MB)
-  multipartUploadSize: 15728640, // this is the default (15 MB)
+  maxAsyncS3: 20,
+  s3RetryCount: 3,
+  s3RetryDelay: 1000,
+  multipartUploadThreshold: 20971520,
+  multipartUploadSize: 15728640,
   s3Options: {
     accessKeyId: configuracoes.s3Config.accessKey,
     secretAccessKey: configuracoes.s3Config.secretKey
@@ -95,6 +97,50 @@ app.get('/get-site', function (req, res){
 	});
 });
 
+app.post('/envia-contato', function (req, res) {
+	var client = new pg.Client(configuracoes.configBD);
+	client.connect(function (err) {
+		  if (err){
+		  	throw err;
+		  }
+		  client.query('SELECT * FROM CONFIG', function (err, result) {
+		    if (err) {
+		    	throw err;	
+			}
+			var config = result.rows[0];
+			var transporter = nodemailer.createTransport("SMTP", {
+			    service: "hotmail",
+			    auth: {
+			        user: config.email,
+			        pass: config.senha_email
+			    }
+			});
+
+			var htmlEmail = '<table>';
+			htmlEmail += '<tr><td>Nome:</td><td>'+req.body.nome+'</td></tr>'
+			htmlEmail += '<tr><td>Telefone:</td><td>'+req.body.phone+'</td></tr>'
+			htmlEmail += '<tr><td>Email:</td><td>'+req.body.email+'</td></tr>'
+			htmlEmail += '<tr><td>Mensagem:</td><td>'+req.body.message+'</td></tr>'
+			htmlEmail += '</table>'
+
+			var mailOptions = {
+			    from: '"Contato - Site Lu Fernandes ?" <'+config.email+'>',
+			    to: config.email,
+			    subject: 'Contato - Site Lu Fernandes - '+req.body.nome,
+			    text: 'Nome:'+req.body.nome+' - Telefone:'+req.body.phone+' - Email:'+req.body.email+' - Mensagem:'+req.body.message,
+			    html: htmlEmail
+			};
+
+			transporter.sendMail(mailOptions, function(error, info){
+			    if(error){
+			    	res.status(500).json({ error: 'Não foi possível enviar o email - Favor ligar em meu contato no inicío do site!'});
+			    }
+			    res.json({ message: 'Email enviado com sucesso! '});
+			});
+		});
+	});
+});
+
 app.get('/get-config', function(req, res) {
     var client = new pg.Client(configuracoes.configBD);
 	client.connect(function (err) {
@@ -129,8 +175,9 @@ app.post('/altera-config', function(req, res) {
 		  parametros.push(req.body.contato);
 		  parametros.push(req.body.preco);
 		  parametros.push(req.body.email);
+		  parametros.push(req.body.senha_email);
 		  parametros.push(req.body.topo_imagens);
-		  client.query('UPDATE CONFIG SET NOME = $1, TITULO= $2, CELULAR= $3, GRUPOS= $4, CONTATO= $5, PRECO= $6, EMAIL=$7, TOPO_IMAGENS=$8', parametros, function (err, result) {
+		  client.query('UPDATE CONFIG SET NOME = $1, TITULO= $2, CELULAR= $3, GRUPOS= $4, CONTATO= $5, PRECO= $6, EMAIL=$7, SENHA_EMAIL=$8, TOPO_IMAGENS=$9', parametros, function (err, result) {
 		    if (err) {
 		    	res.json(err);
 			}

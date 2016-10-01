@@ -30,7 +30,7 @@
 					<div class="4u 12u$(medium)" ng-repeat="grp in grupos | orderBy: ['ordem', 'nome']">
 						<section class="box" data-toggle="modal" data-target="#myModal" data-local="#myCarousel">
 							<p ng-bind="grp.nome"></p>
-							<img class="icon big rounded img1" ng-src="{{ getImagemPrincipal(grp.id) }}"/>
+							<img class="icon big rounded img1" ng-src="{{getImagemPrincipal(grp.id) }}"/>
 						</section>
 					</div>
 				</div>
@@ -48,20 +48,20 @@
 				<form action="#" method="post">
 					<div class="row uniform">
 						<div class="6u 12u$(small)">
-							<input name="name" id="name" value="" placeholder="Nome" type="text">
+							<input name="name" id="name" ng-model="email.nome" value="" placeholder="Nome" type="text">
 						</div>
 						<div class="6u$ 12u$(small)">
-							<input name="phone" id="phone" value="" placeholder="Telefone" type="phone">
+							<input name="phone" id="phone" ng-model="email.phone" value="" placeholder="Telefone" type="phone">
 						</div>
 						<div class="12u$">
-							<input name="email" id="email" value="" placeholder="E-mail" type="email">
+							<input name="email" id="email" ng-model="email.email" value="" placeholder="E-mail" type="email">
 						</div>
 						<div class="12u$">
-							<textarea name="message" id="message" placeholder="Mensagem" rows="6"></textarea>
+							<textarea name="message" id="message" ng-model="email.message" placeholder="Mensagem" rows="6"></textarea>
 						</div>
 						<div class="12u$">
 							<ul class="actions">
-								<li><input value="Enviar" class="special big" type="submit"></li>
+								<li><input id="enviaContato" value="Enviar" class="button special big" ng-click="enviaEmail()"/></li>
 							</ul>
 						</div>
 					</div>

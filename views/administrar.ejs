@@ -39,8 +39,12 @@
 					<input class="form-control" name="contato" id="contato" placeholder="Usuario" type="text" ng-model="config.contato">
 				</div>
 				<div class="form-group">
-					<label for="email">E-mail que será enviado os contatos:</label>
+					<label for="email">E-mail que será enviado os contatos: (Apenas Hotmail)</label>
 					<input class="form-control" name="email" id="email" placeholder="Usuario" type="text" ng-model="config.email">
+				</div>
+				<div class="form-group">
+					<label for="senha_email">Senha do e-mail:</label>
+					<input class="form-control" name="senha_email" id="senha_email" placeholder="Usuario" type="password" ng-model="config.senha_email">
 				</div>
 				<input class="btn btn-default" value="Gravar Alterações" ng-click="salvar()"/>
 			</form>
