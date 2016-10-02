@@ -29,7 +29,7 @@ CREATE TABLE IMAGEM (
 --Criado a estrutura
 
 INSERT INTO CONFIG
-VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 4587-9481', 'Ótimos momentos com detalhes especiais', 'ENCONTRE O QUE FALTA PARA SUA FESTA AQUI!', 'Entre em contato', FALSE, 'erick.peiker@hotmail.com', 'yekesc13241002');
+VALUES('Lu Fernandes', 'Doces Artesanais e Bolos Caseiros', '(11) 972668404 / 4587-9481', 'Ótimos momentos com detalhes especiais', 'ENCONTRE O QUE FALTA PARA SUA FESTA AQUI!', 'Entre em contato', FALSE, 'erick.peiker@hotmail.com', '');
 
 SELECT * FROM CONFIG;
 
