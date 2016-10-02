@@ -133,7 +133,7 @@ app.post('/envia-contato', function (req, res) {
 
 			transporter.sendMail(mailOptions, function(error, info){
 			    if(error){
-			    	res.status(500).json({ error: 'Não foi possível enviar o email - Favor ligar em meu contato no inicío do site!'});
+			    	res.status(500).json({ error: 'Não foi possível enviar o email - Favor ligar em meu contato no inicío do site! Falha:'+error});
 			    }
 			    res.json({ message: 'Email enviado com sucesso! '});
 			});
