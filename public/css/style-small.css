@@ -67,3 +67,11 @@ body, input, select, textarea {
     text-align: center;
     cursor: pointer;
 }
+
+.carousel-inner>.item>img{
+	width : 300px !important;
+	height : 300px !important;
+}
+.titulo-imagem {
+	font-size: 1.6em !important;
+}

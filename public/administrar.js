@@ -4,7 +4,7 @@ angular.module('app', [])
 	$scope.init = function () {
 		$scope.valores = [];
 		$scope.valores.push({id: false, name : 'Não mostrar'});
-		$scope.valores.push({id: true,  name : 'Mostrar'});
+		/*$scope.valores.push({id: true,  name : 'Mostrar'});*/
 
 		$http.get('/get-config')
 		.then(

@@ -67,3 +67,11 @@
 	#banner {
 		padding: 8em 2em 8em;
 	}
+
+	.carousel-inner>.item>img{
+		width : 300px !important;
+		height : 300px !important;
+	}
+	.titulo-imagem {
+		font-size: 1.6em !important;
+	}

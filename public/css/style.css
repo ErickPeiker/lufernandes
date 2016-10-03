@@ -1221,3 +1221,11 @@
 	color : black!important;
 	padding-bottom: 0;
 }
+
+.destaque-principal {
+	font-size: 8em !important;
+}
+
+.grupos {
+	font-weight: bold;
+}
