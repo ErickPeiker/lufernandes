@@ -75,3 +75,7 @@ body, input, select, textarea {
 .titulo-imagem {
 	font-size: 1.6em !important;
 }
+
+.destaque-principal {
+	font-size: 4em !important;
+}
