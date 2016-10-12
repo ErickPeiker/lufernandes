@@ -28,7 +28,7 @@
 				</header>
 				<div class="row 150%">
 					<div class="4u 12u$(medium)" ng-repeat="grp in grupos | orderBy: ['ordem', 'nome']">
-						<section class="box" data-toggle="modal" data-target="#myModal" data-local="#myCarousel">
+						<section class="box" data-toggle="modal" data-target="#myModal" data-local="#myCarousel" ng-click="filtraImagens(grp.id)">
 							<p class="grupos" ng-bind="grp.nome"></p>
 							<img class="icon big rounded img1" ng-src="{{getImagemPrincipal(grp.id) }}"/>
 						</section>
@@ -73,13 +73,13 @@
 			<div id="myCarousel" class="carousel slide carousel-fit" data-ride="carousel">
 				<ol class="carousel-indicators">
 					<li data-target="#myCarousel"
-						ng-repeat="img in imagens track by $index" 
+						ng-repeat="img in imagensFiltradas track by $index" 
 						data-slide-to="$index" 
 						ng-class="{'active': $index == 0}"></li>
 				</ol>
 
 				<div class="carousel-inner">
-					<div ng-repeat="img in imagens" ng-class="{'item': 1==1, 'active': $index == 0}">
+					<div ng-repeat="img in imagensFiltradas" ng-class="{'item': 1==1, 'active': $index == 0}">
 						<div class="carousel-caption">
 							<h3 class="titulo-imagem" ng-bind="img.nome"></h3>
 						</div>

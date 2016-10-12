@@ -6,6 +6,7 @@ modulo.controller('index', function($scope, $http) {
 		$scope.config = {};
 		$scope.grupos = [];
 		$scope.imagens = [];
+		$scope.imagensFiltradas = [];
 		$scope.email = {};
 		$scope.getSite();
 	}
@@ -32,6 +33,15 @@ modulo.controller('index', function($scope, $http) {
 				if ($scope.imagens[img].principal) {
 					return $scope.config.url+$scope.imagens[img].file;
 				}
+			}
+		}
+	}
+
+	$scope.filtraImagens = function (idGrupo) {
+		$scope.imagensFiltradas = [];
+		for (img in $scope.imagens) {
+			if ($scope.imagens[img].id_grupo == idGrupo) {
+				$scope.imagensFiltradas.push($scope.imagens[img]);
 			}
 		}
 	}
